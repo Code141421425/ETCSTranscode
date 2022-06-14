@@ -87,9 +87,19 @@ public class GetData:MonoBehaviour
             result = "new List<int>{%s}" % listData
 
         elif dataType == "int-string":
-            sheet = self.excel.sheet_by_name("translate")
-            rowData = sheet.cell_value(sheet)
+            sheetT = self.excel.sheet_by_name("translate")
+            paramType = sheet.cell_value(0, j)
 
+            # 在翻译表第1行内，进行循环，得出
+            typeIndex = -1
+            for i in range(0, sheetT.row_len(0)):
+                if sheetT.cell_value(0, i) == paramType:
+                    typeIndex = i
+                    break
+            if typeIndex == -1:
+                pass
+            else:
+                result = "\"%s\"" % sheetT.cell_value(int(rowData), typeIndex)
 
         else:
             result = rowData
@@ -142,18 +152,18 @@ public class GetData:MonoBehaviour
         file.write(data)
         file.close()
 
-    def generateGetData(self):
-        # 由于生成最后的getData.cs
-        # 【已弃用】
-        classData = ""
-
-        for fileName in self.fileNameList:
-            fileName = ""+fileName
-            classData += self.getDataParamTemplate % (fileName, fileName.lower(), fileName)
-
-        result = self.getDataTemplate % classData
-
-        return result
+    # def generateGetData(self):
+    #     # 由于生成最后的getData.cs
+    #     # 【已弃用】
+    #     classData = ""
+    #
+    #     for fileName in self.fileNameList:
+    #         fileName = ""+fileName
+    #         classData += self.getDataParamTemplate % (fileName, fileName.lower(), fileName)
+    #
+    #     result = self.getDataTemplate % classData
+    #
+    #     return result
 
     def run(self):
         self.transcode()
