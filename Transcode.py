@@ -117,7 +117,8 @@ public class GetData:MonoBehaviour
             paramData = ""
             for j in range(sheet.ncols):
                 # 组成新的一个字典的一条数据
-                paramData += self.paramTemplate % (sheet.cell_value(0, j),self.__processByType(i, j))
+                if sheet.cell_value(0, j) != "Note":
+                    paramData += self.paramTemplate % (sheet.cell_value(0, j), self.__processByType(i, j))
 
             # 通过数据和模板，组成一个新的字典，字典名称用excel第2列为字典名
             self.dictData += self.singleDataTemplate % (sheet.cell_value(i, 1), paramData)
